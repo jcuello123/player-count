@@ -6,11 +6,20 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Player Count</title>
 </head>
 <body>
-    {{{body}}}
-    <canvas id="myChart" style="max-width: 800px;"></canvas>
+    <div class="container text-center">
+        <div class="chart-types my-3">
+            <button onclick="pieChart()">Pie Chart</button>
+            <button onclick="lineChart()">Line Chart</button>
+            <button onclick="barChart()">Bar Chart</button>
+            <button onclick="polarAreaChart()">Polar Area Chart</button>
+        </div>
+
+        <canvas class="mx-auto" id="myChart" style="max-width: 1000px;"></canvas>
+
     <script>
         const data = [];
         chartIt()
@@ -20,15 +29,17 @@
             data.push(playerCount.osrs);
         }
 
-        async function chartIt(){
+        async function chartIt(chartType){
             await getData();
+            if (!chartType) chartType = 'bar';
             var ctx = document.getElementById('myChart').getContext('2d');
+            Chart.defaults.global.defaultFontColor = 'white';
             var myChart = new Chart(ctx, {
-                type: 'bar',
+                type: chartType,
                 data: {
                     labels: ['OSRS', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                     datasets: [{
-                        label: '# of Votes',
+                        label: '# of Players',
                         data: [data[0], 5, 20000, 1000000, 10000, 1000],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -60,6 +71,42 @@
                 }
             });
         }
+        function pieChart(){
+            clearCanvas();
+            addCanvas();
+            chartIt('pie');
+        }
+        
+        function lineChart(){
+            clearCanvas();
+            addCanvas();
+            chartIt('line');
+        }
+
+        function polarAreaChart(){
+            clearCanvas();
+            addCanvas();
+            chartIt('polarArea');
+        }
+
+        function barChart(){
+            clearCanvas();
+            addCanvas();
+            chartIt('bar');
+        }
+
+        function clearCanvas(){
+            document.getElementById('myChart').remove();
+        }
+
+        function addCanvas(){
+            const canvas = document.createElement('canvas');
+            canvas.id = 'myChart';
+            canvas.style.maxWidth = '1000px';
+            canvas.style.margin = '0 auto';
+            document.querySelector('body').appendChild(canvas);
+        }
     </script>
 </body>
+    </div>
 </html>

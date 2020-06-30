@@ -12,6 +12,9 @@ app.use(express.json());
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
+//Static folder
+app.use(express.static(__dirname + '/public'));
+
 //Server Port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
@@ -22,7 +25,6 @@ app.get('/', (req, res) => {
 
 app.get('/count', async(req, res) => {
     const osrsPlayerCount = await getOsrsPlayerCount();
-    res.json(osrsPlayerCount);
     const playerCount = {
         osrs: osrsPlayerCount
     }
