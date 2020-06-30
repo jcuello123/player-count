@@ -1,0 +1,16 @@
+body {
+    background-image: linear-gradient(to left, #0f0c29, #302b63, #24243e);
+    font: 18px/1.5 Times New Roman;
+    color: white;
+    font-size: 20px;
+}
+
+button {
+    border: 3px solid #0f0c29;
+    border-radius: 7px;
+    color: #0f0c29;
+}
+
+button:hover {
+    background: white;
+}

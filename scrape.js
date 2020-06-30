@@ -3,6 +3,7 @@ const express = require('express');
 const request = require('request-promise');
 const app = express();
 const exphbs = require('express-handlebars');
+const { get } = require('request-promise');
 
 //Body parsers
 app.use(express.json());
@@ -10,6 +11,9 @@ app.use(express.json());
 //View engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
+
+//Static folder
+app.use(express.static(__dirname + '/public'));
 
 //Server Port
 const PORT = process.env.PORT || 5000;
