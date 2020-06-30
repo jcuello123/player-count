@@ -14,22 +14,22 @@
     <script>
         const data = [];
         chartIt()
-        async function getFive(){
+        async function getData(){
             const response = await fetch('/count');
-            const five = await response.json();
-             data.push(parseInt(five));
+            const playerCount = await response.json();
+            data.push(playerCount.osrs);
         }
 
         async function chartIt(){
-            await getFive();
+            await getData();
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: ['OSRS', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                     datasets: [{
                         label: '# of Votes',
-                        data: [data[0], 5, data[0], 5, 2, 3],
+                        data: [data[0], 5, 20000, 1000000, 10000, 1000],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',

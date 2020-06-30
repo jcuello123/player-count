@@ -17,13 +17,16 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 app.get('/', (req, res) => {
-    //getOsrsPlayerCount();
     res.render('index');
 });
 
 app.get('/count', async(req, res) => {
     const osrsPlayerCount = await getOsrsPlayerCount();
     res.json(osrsPlayerCount);
+    const playerCount = {
+        osrs: osrsPlayerCount
+    }
+    res.json(playerCount);
 });
 
 //OSRS Scrape
