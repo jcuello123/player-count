@@ -3,8 +3,7 @@ const express = require('express');
 const request = require('request-promise');
 const app = express();
 const exphbs = require('express-handlebars');
-
-var osrsPlayerCount = 0;
+const { get } = require('request-promise');
 
 //Body parsers
 app.use(express.json());
@@ -22,8 +21,9 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-app.get('/count', (req, res) => {
-    res.json('5');
+app.get('/count', async(req, res) => {
+    const osrsPlayerCount = await getOsrsPlayerCount();
+    res.json(osrsPlayerCount);
 });
 
 //OSRS Scrape
@@ -31,4 +31,5 @@ async function getOsrsPlayerCount() {
     const result = await request.get("https://oldschool.runescape.com");
     const $ = cheerio.load(result);
     osrsPlayerCount = parseInt($('.player-count').text().split(' ')[3].replace(',', ''));
+    return osrsPlayerCount;
 }
