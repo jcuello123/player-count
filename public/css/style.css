@@ -6,11 +6,12 @@ body {
 }
 
 button {
+    background: white;
     border: 3px solid #0f0c29;
     border-radius: 7px;
     color: #0f0c29;
 }
 
 button:hover {
-    background: white;
+    background: #f8f8ff;
 }
