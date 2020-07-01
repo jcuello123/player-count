@@ -24,12 +24,18 @@ app.get('/', (req, res) => {
 });
 
 app.get('/count', async(req, res) => {
+    const playerCount = await getData();
+    res.json(playerCount);
+});
+
+async function getData() {
     const osrsPlayerCount = await getOsrsPlayerCount();
     const gtaPlayerCount = await getGTAPlayerCount();
     const pubgPlayerCount = await getPUBGPlayerCount();
     const lolPlayerCount = await getLOLPlayerCount();
     const fortnitePlayerCount = await getFortnitePlayerCount();
     const minecraftPlayerCount = await getMinecraftPlayerCount();
+
     const playerCount = {
         osrs: osrsPlayerCount,
         gta: gtaPlayerCount,
@@ -38,8 +44,8 @@ app.get('/count', async(req, res) => {
         fortnite: fortnitePlayerCount,
         minecraft: minecraftPlayerCount
     }
-    res.json(playerCount);
-});
+    return playerCount;
+}
 
 //OSRS Scrape
 async function getOsrsPlayerCount() {
@@ -50,7 +56,7 @@ async function getOsrsPlayerCount() {
 }
 
 //GTA V scrape
-async function getGTAPlayerCount(){
+async function getGTAPlayerCount() {
     const result = await request.get('https://steamcharts.com/app/271590');
     const $ = cheerio.load(result);
     const gtaPlayerCount = parseInt($('.num').first().text());
@@ -58,7 +64,7 @@ async function getGTAPlayerCount(){
 }
 
 //PUBG scrape
-async function getPUBGPlayerCount(){
+async function getPUBGPlayerCount() {
     const result = await request.get('https://steamcharts.com/app/578080');
     const $ = cheerio.load(result);
     const pubgPlayerCount = parseInt($('.num').first().text());
@@ -66,7 +72,7 @@ async function getPUBGPlayerCount(){
 }
 
 //League of Legends scrape
-async function getLOLPlayerCount(){
+async function getLOLPlayerCount() {
     const result = await request.get('https://playercounter.com/league-of-legends/');
     const $ = cheerio.load(result);
     const lolPlayerCount = parseInt($('h2').first().text().split(' ')[0].replace(',', '').replace(',', ''));
@@ -74,7 +80,7 @@ async function getLOLPlayerCount(){
 }
 
 //Fortnite scrape
-async function getFortnitePlayerCount(){
+async function getFortnitePlayerCount() {
     const result = await request.get('https://playercounter.com/fortnite/');
     const $ = cheerio.load(result);
     const fortnitePlayerCount = parseInt($('h2').first().text().split(' ')[0].replace(',', '').replace(',', ''));
@@ -82,7 +88,7 @@ async function getFortnitePlayerCount(){
 }
 
 //Minecraft scrape
-async function getMinecraftPlayerCount(){
+async function getMinecraftPlayerCount() {
     const result = await request.get('https://playercounter.com/minecraft/');
     const $ = cheerio.load(result);
     const minecraftPlayerCount = parseInt($('h2').first().text().split(' ')[0].replace(',', '').replace(',', ''));
