@@ -47,7 +47,7 @@ async function getData() {
     return playerCount;
 }
 
-//OSRS Scrape
+//OSRS scrape
 async function getOsrsPlayerCount() {
     const result = await request.get('https://oldschool.runescape.com');
     const $ = cheerio.load(result);
