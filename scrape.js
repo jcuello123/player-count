@@ -25,16 +25,66 @@ app.get('/', (req, res) => {
 
 app.get('/count', async(req, res) => {
     const osrsPlayerCount = await getOsrsPlayerCount();
+    const gtaPlayerCount = await getGTAPlayerCount();
+    const pubgPlayerCount = await getPUBGPlayerCount();
+    const lolPlayerCount = await getLOLPlayerCount();
+    const fortnitePlayerCount = await getFortnitePlayerCount();
+    const minecraftPlayerCount = await getMinecraftPlayerCount();
     const playerCount = {
-        osrs: osrsPlayerCount
+        osrs: osrsPlayerCount,
+        gta: gtaPlayerCount,
+        pubg: pubgPlayerCount,
+        lol: lolPlayerCount,
+        fortnite: fortnitePlayerCount,
+        minecraft: minecraftPlayerCount
     }
     res.json(playerCount);
 });
 
 //OSRS Scrape
 async function getOsrsPlayerCount() {
-    const result = await request.get("https://oldschool.runescape.com");
+    const result = await request.get('https://oldschool.runescape.com');
     const $ = cheerio.load(result);
-    osrsPlayerCount = parseInt($('.player-count').text().split(' ')[3].replace(',', ''));
+    const osrsPlayerCount = parseInt($('.player-count').text().split(' ')[3].replace(',', ''));
     return osrsPlayerCount;
+}
+
+//GTA V scrape
+async function getGTAPlayerCount(){
+    const result = await request.get('https://steamcharts.com/app/271590');
+    const $ = cheerio.load(result);
+    const gtaPlayerCount = parseInt($('.num').first().text());
+    return gtaPlayerCount;
+}
+
+//PUBG scrape
+async function getPUBGPlayerCount(){
+    const result = await request.get('https://steamcharts.com/app/578080');
+    const $ = cheerio.load(result);
+    const pubgPlayerCount = parseInt($('.num').first().text());
+    return pubgPlayerCount;
+}
+
+//League of Legends scrape
+async function getLOLPlayerCount(){
+    const result = await request.get('https://playercounter.com/league-of-legends/');
+    const $ = cheerio.load(result);
+    const lolPlayerCount = parseInt($('h2').first().text().split(' ')[0].replace(',', '').replace(',', ''));
+    return lolPlayerCount;
+}
+
+//Fortnite scrape
+async function getFortnitePlayerCount(){
+    const result = await request.get('https://playercounter.com/fortnite/');
+    const $ = cheerio.load(result);
+    const fortnitePlayerCount = parseInt($('h2').first().text().split(' ')[0].replace(',', '').replace(',', ''));
+    return fortnitePlayerCount;
+}
+
+//Minecraft scrape
+async function getMinecraftPlayerCount(){
+    const result = await request.get('https://playercounter.com/minecraft/');
+    const $ = cheerio.load(result);
+    const minecraftPlayerCount = parseInt($('h2').first().text().split(' ')[0].replace(',', '').replace(',', ''));
+    return minecraftPlayerCount;
 }

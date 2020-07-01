@@ -22,25 +22,28 @@
 
     <script>
         const data = [];
-        chartIt()
+        chartIt();
+
         async function getData(){
             const response = await fetch('/count');
             const playerCount = await response.json();
-            data.push(playerCount.osrs);
+            for (game in playerCount){
+                data.push(playerCount[game]);
+            }
         }
 
         async function chartIt(chartType){
-            await getData();
+            if (data.length == 0) await getData();
             if (!chartType) chartType = 'bar';
             var ctx = document.getElementById('myChart').getContext('2d');
             Chart.defaults.global.defaultFontColor = 'white';
             var myChart = new Chart(ctx, {
                 type: chartType,
                 data: {
-                    labels: ['OSRS', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: ['OSRS', 'GTA V', 'PUBG', 'LoL', 'Fortnite', 'Minecraft'],
                     datasets: [{
                         label: '# of Players',
-                        data: [data[0], 5, 20000, 1000000, 10000, 1000],
+                        data: [data[0], data[1], data[2], data[3], data[4], data[5]],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
@@ -72,31 +75,28 @@
             });
         }
         function pieChart(){
-            clearCanvas();
-            addCanvas();
+            resetCanvas()
             chartIt('pie');
         }
         
         function lineChart(){
-            clearCanvas();
-            addCanvas();
+            resetCanvas()
             chartIt('line');
         }
 
         function polarAreaChart(){
-            clearCanvas();
-            addCanvas();
+            resetCanvas()
             chartIt('polarArea');
         }
 
         function barChart(){
-            clearCanvas();
-            addCanvas();
+            resetCanvas()
             chartIt('bar');
         }
 
-        function clearCanvas(){
+        function resetCanvas(){
             document.getElementById('myChart').remove();
+            addCanvas();
         }
 
         function addCanvas(){
